@@ -9,18 +9,20 @@ namespace ABCSharp
     {
         public string FilePath { get; }
 
+        public BinaryReader Reader() => new BinaryReader(File.OpenRead(FilePath), Encoding.ASCII);
+        public BinaryWriter Writer() => new BinaryWriter(File.OpenWrite(FilePath), Encoding.ASCII);
+
         public BinaryFile(string path)
         {
             FilePath = path.Substring(0);
         }
 
-        public override string ToString() =>
-            FilePath;
+        public override string ToString() => FilePath;
     }
 
     public static class BinaryFileReader
     {
-        public static IEnumerable<int> Read(this BinaryFile<int> file) => 
+        public static IEnumerable<int> Read(this BinaryFile<int> file) =>
             ReadAny(file, r => r.ReadInt32());
 
         public static IEnumerable<double> Read(this BinaryFile<double> file) =>
@@ -49,8 +51,8 @@ namespace ABCSharp
 
         private static IEnumerable<T> ReadAny<T>(BinaryFile<T> file, Func<BinaryReader, T> read)
         {
-            if (!File.Exists(file.FilePath)) throw new ArgumentException("File doesn't exist");
-            using (var reader = new BinaryReader(File.OpenRead(file.FilePath), Encoding.ASCII))
+            if (!File.Exists(file.FilePath)) throw new FileNotFoundException();
+            using (var reader = file.Reader())
             {
                 while (reader.PeekChar() > 0)
                     yield return read(reader);
@@ -89,7 +91,7 @@ namespace ABCSharp
 
         private static void WriteAny<T>(BinaryFile<T> file, Action<BinaryWriter, T> write, params T[] elems)
         {
-            using (var writer = new BinaryWriter(File.OpenWrite(file.FilePath), Encoding.ASCII))
+            using (var writer = file.Writer())
             {
                 foreach (var x in elems)
                     write(writer, x);
