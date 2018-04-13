@@ -5,12 +5,18 @@ using System.Text;
 
 namespace ABCSharp
 {
-    public class BinaryFile<T>
+    public class BinaryFile<T> : IDisposable
     {
         public string FilePath { get; }
 
-        public BinaryReader Reader() => new BinaryReader(File.OpenRead(FilePath), Encoding.ASCII);
-        public BinaryWriter Writer() => new BinaryWriter(File.OpenWrite(FilePath), Encoding.ASCII);
+        public BinaryReader Reader() => 
+            new BinaryReader(File.Open(FilePath, FileMode.Open), Encoding.ASCII);
+
+        public BinaryWriter Writer() => 
+            new BinaryWriter(File.Open(FilePath, FileMode.Create), Encoding.ASCII);
+
+        public BinaryWriter Appender() => 
+            new BinaryWriter(File.Open(FilePath, FileMode.Append), Encoding.ASCII);
 
         public BinaryFile(string path)
         {
@@ -18,6 +24,11 @@ namespace ABCSharp
         }
 
         public override string ToString() => FilePath;
+
+        public void Dispose()
+        {
+            File.Delete(FilePath);
+        }
     }
 
     public static class BinaryFileReader
@@ -92,6 +103,45 @@ namespace ABCSharp
         private static void WriteAny<T>(BinaryFile<T> file, Action<BinaryWriter, T> write, params T[] elems)
         {
             using (var writer = file.Writer())
+            {
+                foreach (var x in elems)
+                    write(writer, x);
+            }
+        }
+    }
+
+    public static class BinaryFileAppender
+    {
+        public static void Append(this BinaryFile<int> file, params int[] elems) =>
+            AppendAny(file, (w, x) => w.Write(x), elems);
+
+        public static void Write(this BinaryFile<double> file, params double[] elems) =>
+            AppendAny(file, (w, x) => w.Write(x), elems);
+
+        public static void Write(this BinaryFile<byte> file, params byte[] elems) =>
+            AppendAny(file, (w, x) => w.Write(x), elems);
+
+        public static void Write(this BinaryFile<bool> file, params bool[] elems) =>
+            AppendAny(file, (w, x) => w.Write(x), elems);
+
+        public static void Write(this BinaryFile<string> file, params string[] elems) =>
+            AppendAny(file, (w, x) => w.Write(x), elems);
+
+        public static void Write(this BinaryFile<char> file, params char[] elems) =>
+            AppendAny(file, (w, x) => w.Write(x), elems);
+
+        public static void Write(this BinaryFile<short> file, params short[] elems) =>
+            AppendAny(file, (w, x) => w.Write(x), elems);
+
+        public static void Write(this BinaryFile<long> file, params long[] elems) =>
+            AppendAny(file, (w, x) => w.Write(x), elems);
+
+        public static void Write<T>(this BinaryFile<T> file, params T[] elems) =>
+            throw new ArgumentException("Unsupported type");
+
+        private static void AppendAny<T>(BinaryFile<T> file, Action<BinaryWriter, T> write, params T[] elems)
+        {
+            using (var writer = file.Appender())
             {
                 foreach (var x in elems)
                     write(writer, x);

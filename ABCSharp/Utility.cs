@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace ABCSharp
 {
@@ -58,6 +59,17 @@ namespace ABCSharp
                 result = 0;
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Creates temp-name for file
+        /// </summary>
+        public static string GetTempName(string path, string postfix = "-temp")
+        {
+            var ext = Path.GetExtension(path);
+            var directory = Path.GetDirectoryName(path);
+            var filename = Path.GetFileNameWithoutExtension(path);
+            return Path.Combine(directory, filename + postfix + ext);
         }
     }
 }
