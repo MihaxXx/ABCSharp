@@ -5,7 +5,7 @@ namespace ABCSharp
     public static class Utility
     {
         /// <summary>
-        /// Self-explainatory
+        /// Swaps values of two variables
         /// </summary>
         public static void Swap<T>(ref T a, ref T b)
         {
