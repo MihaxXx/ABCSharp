@@ -18,6 +18,9 @@ namespace ABCSharp
         public BinaryWriter Appender() => 
             new BinaryWriter(File.Open(FilePath, FileMode.Append), Encoding.ASCII);
 
+        public FileStream Stream() =>
+            new FileStream(FilePath,FileMode.Open);
+
         public BinaryFile(string path)
         {
             FilePath = path.Substring(0);
@@ -147,5 +150,50 @@ namespace ABCSharp
                     write(writer, x);
             }
         }
+    }
+    public static class BinaryFileTuncater
+    {
+        public static void Truncate(this BinaryFile<int> file, int n) =>
+            TruncateAny(file, n);
+
+        public static void Truncate(this BinaryFile<double> file, int n) =>
+            TruncateAny(file, n);
+
+        public static void Truncate(this BinaryFile<byte> file, int n) =>
+            TruncateAny(file, n);
+
+        public static void Truncate(this BinaryFile<bool> file, int n) =>
+            TruncateAny(file, n);
+
+        public static void Truncate(this BinaryFile<string> file, int n) =>
+            TruncateAny(file, n);
+
+        public static void Truncate(this BinaryFile<char> file, int n) =>
+            TruncateAny(file, n);
+
+        public static void Truncate(this BinaryFile<short> file, int n) =>
+            TruncateAny(file, n);
+
+        public static void Truncate(this BinaryFile<long> file, int n) =>
+            TruncateAny(file, n);
+
+        /// <summary>
+        /// Truncate the file by cutting off elements which number is more than <paramref name="n"/>.
+        /// </summary>
+        /// <param name="file">File.</param>
+        /// <param name="n">New number of elements in the file.</param>
+        public static void Truncate<T>(this BinaryFile<T> file, int n) =>
+            throw new ArgumentException("Unsupported type");
+
+        private static void TruncateAny<T>(BinaryFile<T> file, int n)
+        {
+            using (var stream = file.Stream())             {
+                var size = System.Runtime.InteropServices.Marshal.SizeOf<T>();
+                if (stream.Length >= n * size)
+                {
+                    stream.Seek(n * size, SeekOrigin.Begin);
+                    stream.SetLength(stream.Position);
+                }
+                else throw new Exception("File is too short.");             }         }
     }
 }
