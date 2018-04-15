@@ -115,28 +115,28 @@ namespace ABCSharp
         public static void Append(this BinaryFile<int> file, params int[] elems) =>
             AppendAny(file, (w, x) => w.Write(x), elems);
 
-        public static void Write(this BinaryFile<double> file, params double[] elems) =>
+        public static void Append(this BinaryFile<double> file, params double[] elems) =>
             AppendAny(file, (w, x) => w.Write(x), elems);
 
-        public static void Write(this BinaryFile<byte> file, params byte[] elems) =>
+        public static void Append(this BinaryFile<byte> file, params byte[] elems) =>
             AppendAny(file, (w, x) => w.Write(x), elems);
 
-        public static void Write(this BinaryFile<bool> file, params bool[] elems) =>
+        public static void Append(this BinaryFile<bool> file, params bool[] elems) =>
             AppendAny(file, (w, x) => w.Write(x), elems);
 
-        public static void Write(this BinaryFile<string> file, params string[] elems) =>
+        public static void Append(this BinaryFile<string> file, params string[] elems) =>
             AppendAny(file, (w, x) => w.Write(x), elems);
 
-        public static void Write(this BinaryFile<char> file, params char[] elems) =>
+        public static void Append(this BinaryFile<char> file, params char[] elems) =>
             AppendAny(file, (w, x) => w.Write(x), elems);
 
-        public static void Write(this BinaryFile<short> file, params short[] elems) =>
+        public static void Append(this BinaryFile<short> file, params short[] elems) =>
             AppendAny(file, (w, x) => w.Write(x), elems);
 
-        public static void Write(this BinaryFile<long> file, params long[] elems) =>
+        public static void Append(this BinaryFile<long> file, params long[] elems) =>
             AppendAny(file, (w, x) => w.Write(x), elems);
 
-        public static void Write<T>(this BinaryFile<T> file, params T[] elems) =>
+        public static void Append<T>(this BinaryFile<T> file, params T[] elems) =>
             throw new ArgumentException("Unsupported type");
 
         private static void AppendAny<T>(BinaryFile<T> file, Action<BinaryWriter, T> write, params T[] elems)
