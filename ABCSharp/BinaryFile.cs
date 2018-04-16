@@ -233,7 +233,7 @@ namespace ABCSharp
         }
     }
 
-    public static class BinaryFileTuncater
+    public static class BinaryFileTruncater
     {
 	    /// <summary>
 	    /// Truncate the file by cutting off elements which number is more than <paramref name="n"/>.
