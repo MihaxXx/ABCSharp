@@ -30,37 +30,64 @@ namespace ABCSharp
 
         public void Dispose()
         {
-            File.Delete(FilePath);
+            if (File.Exists(FilePath)) File.Delete(FilePath);
         }
     }
 
     public static class BinaryFileReader
     {
+		/// <summary>
+		/// Returns file content as IEnumerable
+		/// </summary>
         public static IEnumerable<int> Read(this BinaryFile<int> file) =>
             ReadAny(file, r => r.ReadInt32());
 
-        public static IEnumerable<double> Read(this BinaryFile<double> file) =>
+	    /// <summary>
+	    /// Returns file content as IEnumerable
+	    /// </summary>
+		public static IEnumerable<double> Read(this BinaryFile<double> file) =>
             ReadAny(file, r => r.ReadDouble());
 
-        public static IEnumerable<byte> Read(this BinaryFile<byte> file) =>
+	    /// <summary>
+	    /// Returns file content as IEnumerable
+	    /// </summary>
+		public static IEnumerable<byte> Read(this BinaryFile<byte> file) =>
             ReadAny(file, r => r.ReadByte());
 
-        public static IEnumerable<char> Read(this BinaryFile<char> file) =>
+	    /// <summary>
+	    /// Returns file content as IEnumerable
+	    /// </summary>
+		public static IEnumerable<char> Read(this BinaryFile<char> file) =>
             ReadAny(file, r => r.ReadChar());
 
-        public static IEnumerable<short> Read(this BinaryFile<short> file) =>
+	    /// <summary>
+	    /// Returns file content as IEnumerable
+	    /// </summary>
+		public static IEnumerable<short> Read(this BinaryFile<short> file) =>
             ReadAny(file, r => r.ReadInt16());
 
-        public static IEnumerable<long> Read(this BinaryFile<long> file) =>
+	    /// <summary>
+	    /// Returns file content as IEnumerable
+	    /// </summary>
+		public static IEnumerable<long> Read(this BinaryFile<long> file) =>
             ReadAny(file, r => r.ReadInt64());
 
-        public static IEnumerable<bool> Read(this BinaryFile<bool> file) =>
+	    /// <summary>
+	    /// Returns file content as IEnumerable
+	    /// </summary>
+		public static IEnumerable<bool> Read(this BinaryFile<bool> file) =>
             ReadAny(file, r => r.ReadBoolean());
 
-        public static IEnumerable<string> Read(this BinaryFile<string> file) =>
+	    /// <summary>
+	    /// Returns file content as IEnumerable
+	    /// </summary>
+		public static IEnumerable<string> Read(this BinaryFile<string> file) =>
             ReadAny(file, r => r.ReadString());
 
-        public static IEnumerable<T> Read<T>(this BinaryFile<T> file) => 
+	    /// <summary>
+	    /// Content of this type cannot be readen
+	    /// </summary>
+		public static IEnumerable<T> Read<T>(this BinaryFile<T> file) => 
             throw new ArgumentException("Unsupported type");
 
         private static IEnumerable<T> ReadAny<T>(BinaryFile<T> file, Func<BinaryReader, T> read)
@@ -76,30 +103,57 @@ namespace ABCSharp
 
     public static class BinaryFileWriter
     {
+		/// <summary>
+		/// Rewrites the file with provided data
+		/// </summary>
         public static void Write(this BinaryFile<int> file, params int[] elems) =>
             WriteAny(file, (w, x) => w.Write(x), elems);
 
-        public static void Write(this BinaryFile<double> file, params double[] elems) =>
+	    /// <summary>
+	    /// Rewrites the file with provided data
+	    /// </summary>
+		public static void Write(this BinaryFile<double> file, params double[] elems) =>
             WriteAny(file, (w, x) => w.Write(x), elems);
 
-        public static void Write(this BinaryFile<byte> file, params byte[] elems) =>
+	    /// <summary>
+	    /// Rewrites the file with provided data
+	    /// </summary>
+		public static void Write(this BinaryFile<byte> file, params byte[] elems) =>
             WriteAny(file, (w, x) => w.Write(x), elems);
 
-        public static void Write(this BinaryFile<bool> file, params bool[] elems) =>
+	    /// <summary>
+	    /// Rewrites the file with provided data
+	    /// </summary>
+		public static void Write(this BinaryFile<bool> file, params bool[] elems) =>
             WriteAny(file, (w, x) => w.Write(x), elems);
 
-        public static void Write(this BinaryFile<string> file, params string[] elems) =>
+	    /// <summary>
+	    /// Rewrites the file with provided data
+	    /// </summary>
+		public static void Write(this BinaryFile<string> file, params string[] elems) =>
             WriteAny(file, (w, x) => w.Write(x), elems);
 
-        public static void Write(this BinaryFile<char> file, params char[] elems) =>
+	    /// <summary>
+	    /// Rewrites the file with provided data
+	    /// </summary>
+		public static void Write(this BinaryFile<char> file, params char[] elems) =>
             WriteAny(file, (w, x) => w.Write(x), elems);
 
-        public static void Write(this BinaryFile<short> file, params short[] elems) =>
+	    /// <summary>
+	    /// Rewrites the file with provided data
+	    /// </summary>
+		public static void Write(this BinaryFile<short> file, params short[] elems) =>
             WriteAny(file, (w, x) => w.Write(x), elems);
 
-        public static void Write(this BinaryFile<long> file, params long[] elems) =>
+	    /// <summary>
+	    /// Rewrites the file with provided data
+	    /// </summary>
+		public static void Write(this BinaryFile<long> file, params long[] elems) =>
             WriteAny(file, (w, x) => w.Write(x), elems);
 
+		/// <summary>
+		/// Type is not supported. Will raise an exception.
+		/// </summary>
         public static void Write<T>(this BinaryFile<T> file, params T[] elems) =>
             throw new ArgumentException("Unsupported type");
 
@@ -115,34 +169,61 @@ namespace ABCSharp
 
     public static class BinaryFileAppender
     {
+		/// <summary>
+		/// Adds elements to the end of file
+		/// </summary>
         public static void Append(this BinaryFile<int> file, params int[] elems) =>
             AppendAny(file, (w, x) => w.Write(x), elems);
 
-        public static void Append(this BinaryFile<double> file, params double[] elems) =>
+	    /// <summary>
+	    /// Adds elements to the end of file
+	    /// </summary>
+		public static void Append(this BinaryFile<double> file, params double[] elems) =>
             AppendAny(file, (w, x) => w.Write(x), elems);
 
-        public static void Append(this BinaryFile<byte> file, params byte[] elems) =>
+	    /// <summary>
+	    /// Adds elements to the end of file
+	    /// </summary>
+		public static void Append(this BinaryFile<byte> file, params byte[] elems) =>
             AppendAny(file, (w, x) => w.Write(x), elems);
 
-        public static void Append(this BinaryFile<bool> file, params bool[] elems) =>
+	    /// <summary>
+	    /// Adds elements to the end of file
+	    /// </summary>
+		public static void Append(this BinaryFile<bool> file, params bool[] elems) =>
             AppendAny(file, (w, x) => w.Write(x), elems);
 
-        public static void Append(this BinaryFile<string> file, params string[] elems) =>
+	    /// <summary>
+	    /// Adds elements to the end of file
+	    /// </summary>
+		public static void Append(this BinaryFile<string> file, params string[] elems) =>
             AppendAny(file, (w, x) => w.Write(x), elems);
 
-        public static void Append(this BinaryFile<char> file, params char[] elems) =>
+	    /// <summary>
+	    /// Adds elements to the end of file
+	    /// </summary>
+		public static void Append(this BinaryFile<char> file, params char[] elems) =>
             AppendAny(file, (w, x) => w.Write(x), elems);
 
-        public static void Append(this BinaryFile<short> file, params short[] elems) =>
+	    /// <summary>
+	    /// Adds elements to the end of file
+	    /// </summary>
+		public static void Append(this BinaryFile<short> file, params short[] elems) =>
             AppendAny(file, (w, x) => w.Write(x), elems);
 
-        public static void Append(this BinaryFile<long> file, params long[] elems) =>
+	    /// <summary>
+	    /// Adds elements to the end of file
+	    /// </summary>
+		public static void Append(this BinaryFile<long> file, params long[] elems) =>
             AppendAny(file, (w, x) => w.Write(x), elems);
 
-        public static void Append<T>(this BinaryFile<T> file, params T[] elems) =>
+	    /// <summary>
+	    /// Type is not supported. Will raise exception
+	    /// </summary>
+		public static void Append<T>(this BinaryFile<T> file, params T[] elems) =>
             throw new ArgumentException("Unsupported type");
 
-        private static void AppendAny<T>(BinaryFile<T> file, Action<BinaryWriter, T> write, params T[] elems)
+		private static void AppendAny<T>(BinaryFile<T> file, Action<BinaryWriter, T> write, params T[] elems)
         {
             using (var writer = file.Appender())
             {
@@ -151,30 +232,71 @@ namespace ABCSharp
             }
         }
     }
+
     public static class BinaryFileTuncater
     {
-        public static void Truncate(this BinaryFile<int> file, int n) =>
+	    /// <summary>
+	    /// Truncate the file by cutting off elements which number is more than <paramref name="n"/>.
+	    /// </summary>
+	    /// <param name="file">File.</param>
+	    /// <param name="n">New number of elements in the file.</param>
+		public static void Truncate(this BinaryFile<int> file, int n) =>
             TruncateAny(file, n);
 
-        public static void Truncate(this BinaryFile<double> file, int n) =>
+	    /// <summary>
+	    /// Truncate the file by cutting off elements which number is more than <paramref name="n"/>.
+	    /// </summary>
+	    /// <param name="file">File.</param>
+	    /// <param name="n">New number of elements in the file.</param>
+		public static void Truncate(this BinaryFile<double> file, int n) =>
             TruncateAny(file, n);
 
-        public static void Truncate(this BinaryFile<byte> file, int n) =>
+	    /// <summary>
+	    /// Truncate the file by cutting off elements which number is more than <paramref name="n"/>.
+	    /// </summary>
+	    /// <param name="file">File.</param>
+	    /// <param name="n">New number of elements in the file.</param>
+		public static void Truncate(this BinaryFile<byte> file, int n) =>
             TruncateAny(file, n);
 
-        public static void Truncate(this BinaryFile<bool> file, int n) =>
+	    /// <summary>
+	    /// Truncate the file by cutting off elements which number is more than <paramref name="n"/>.
+	    /// </summary>
+	    /// <param name="file">File.</param>
+	    /// <param name="n">New number of elements in the file.</param>
+		public static void Truncate(this BinaryFile<bool> file, int n) =>
             TruncateAny(file, n);
 
-        public static void Truncate(this BinaryFile<string> file, int n) =>
+	    /// <summary>
+	    /// Truncate the file by cutting off elements which number is more than <paramref name="n"/>.
+	    /// </summary>
+	    /// <param name="file">File.</param>
+	    /// <param name="n">New number of elements in the file.</param>
+		public static void Truncate(this BinaryFile<string> file, int n) =>
             TruncateAny(file, n);
 
-        public static void Truncate(this BinaryFile<char> file, int n) =>
+	    /// <summary>
+	    /// Truncate the file by cutting off elements which number is more than <paramref name="n"/>.
+	    /// </summary>
+	    /// <param name="file">File.</param>
+	    /// <param name="n">New number of elements in the file.</param>
+		public static void Truncate(this BinaryFile<char> file, int n) =>
             TruncateAny(file, n);
 
-        public static void Truncate(this BinaryFile<short> file, int n) =>
+	    /// <summary>
+	    /// Truncate the file by cutting off elements which number is more than <paramref name="n"/>.
+	    /// </summary>
+	    /// <param name="file">File.</param>
+	    /// <param name="n">New number of elements in the file.</param>
+		public static void Truncate(this BinaryFile<short> file, int n) =>
             TruncateAny(file, n);
 
-        public static void Truncate(this BinaryFile<long> file, int n) =>
+	    /// <summary>
+	    /// Truncate the file by cutting off elements which number is more than <paramref name="n"/>.
+	    /// </summary>
+	    /// <param name="file">File.</param>
+	    /// <param name="n">New number of elements in the file.</param>
+		public static void Truncate(this BinaryFile<long> file, int n) =>
             TruncateAny(file, n);
 
         /// <summary>

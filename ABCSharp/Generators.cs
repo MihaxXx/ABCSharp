@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ABCSharp
 {
@@ -22,5 +23,16 @@ namespace ABCSharp
             for (var i = 0; i != end; ++i)
                 yield return i;
         }
+
+		/// <summary>
+		/// Returns sequence of double from begin to end (excluded) and step h
+		/// </summary>
+	    public static IEnumerable<double> Range(double begin, double end, double h = 1)
+	    {
+			if (begin < end && h < 0 || begin > end && h > 0)
+				throw new ArgumentException("Incorrect range");
+		    for (var i = begin; i < end; i += h)
+			    yield return i;
+	    }
     }
 }

@@ -21,6 +21,23 @@ namespace ABCSharp
         public static int ReadInt() =>
             int.Parse(Console.ReadLine());
 
+		/// <summary>
+		/// Attempts to read two consecutive ints from console
+		/// </summary>
+		/// <returns>Tuple of two ints</returns>
+	    public static (int, int) ReadInt2()
+	    {
+		    try
+		    {
+			    var input = Console.ReadLine().Split();
+			    return (int.Parse(input[0]), int.Parse(input[1]));
+		    }
+		    catch
+		    {
+				throw new IOException();
+		    }
+	    }
+
         /// <summary>
         /// Attempts to read integer from console. Returns true if succeeded, false otherwise.
         /// </summary>
@@ -43,6 +60,22 @@ namespace ABCSharp
         /// </summary>
         public static double ReadDouble() =>
             double.Parse(Console.ReadLine());
+
+		/// <summary>
+		/// Attempts to read two consecutive double numbers from console
+		/// </summary>
+	    public static (double, double) ReadDouble2()
+	    {
+		    try
+		    {
+			    var input = Console.ReadLine().Split();
+			    return (double.Parse(input[0]), double.Parse(input[1]));
+		    }
+		    catch
+		    {
+				throw new IOException();
+		    }
+	    }
 
         /// <summary>
         /// Attempts to read double from console. Returns true if succeeded, false otherwise.
