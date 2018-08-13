@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace ABCSharp
 {
@@ -19,6 +20,23 @@ namespace ABCSharp
         /// </summary>
         public static int ReadInt() =>
             int.Parse(Console.ReadLine());
+
+		/// <summary>
+		/// Attempts to read two consecutive ints from console
+		/// </summary>
+		/// <returns>Tuple of two ints</returns>
+	    public static (int, int) ReadInt2()
+	    {
+		    try
+		    {
+			    var input = Console.ReadLine().Split();
+			    return (int.Parse(input[0]), int.Parse(input[1]));
+		    }
+		    catch
+		    {
+				throw new IOException();
+		    }
+	    }
 
         /// <summary>
         /// Attempts to read integer from console. Returns true if succeeded, false otherwise.
@@ -43,6 +61,22 @@ namespace ABCSharp
         public static double ReadDouble() =>
             double.Parse(Console.ReadLine());
 
+		/// <summary>
+		/// Attempts to read two consecutive double numbers from console
+		/// </summary>
+	    public static (double, double) ReadDouble2()
+	    {
+		    try
+		    {
+			    var input = Console.ReadLine().Split();
+			    return (double.Parse(input[0]), double.Parse(input[1]));
+		    }
+		    catch
+		    {
+				throw new IOException();
+		    }
+	    }
+
         /// <summary>
         /// Attempts to read double from console. Returns true if succeeded, false otherwise.
         /// </summary>
@@ -58,6 +92,17 @@ namespace ABCSharp
                 result = 0;
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Creates temp-name for file
+        /// </summary>
+        public static string GetTempName(string path, string postfix = "-temp")
+        {
+            var ext = Path.GetExtension(path);
+            var directory = Path.GetDirectoryName(path);
+            var filename = Path.GetFileNameWithoutExtension(path);
+            return Path.Combine(directory, filename + postfix + ext);
         }
     }
 }
